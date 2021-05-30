@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="icon" href="/assets/img/icons/favicon.png" type="image/ico">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <script rel="script" type="text/javascript" src="/assets/js/jquery.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/bootstrap.bundle.min.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/static/assets/css/fonts.css/fonts.css" rel="stylesheet" type="text/css">
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <style>
+        .loginpage {
+            position: relative;
+        }
+        .login {
+            display: flex !important;
+            min-height: 100vh;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+        .login-center {
+            background: #fff;
+            min-width: 38rem;
+            padding: 2em 3em;
+            border-radius: 10px;
+            margin: 2em 0;
+        }
+        .login-header {
+            margin-bottom: 2rem !important;
+        }
+        .login-center .has-feedback.feedback-left .form-control {
+            padding-left: 38px;
+            padding-right: 12px;
+        }
+        .login-center .has-feedback.feedback-left .form-control-feedback {
+            left: 0;
+            right: auto;
+            width: 38px;
+            height: 38px;
+            line-height: 38px;
+            z-index: 4;
+            color: #dcdcdc;
+        }
+        .login-center .has-feedback.feedback-left.row .form-control-feedback {
+            left: 15px;
+        }
+    </style>
+    <script rel="script" type="text/javascript" src="/assets/js/birthday.js"></script>
+    <script>
+        function ajaxLogin() {
+            var adminName = $("#adminName").val().trim();
+            var password = $("#password").val().trim();
+            //ajax 上传用户信息
+            $.ajax({
+                url: "ajaxAdminLogin",
+                type: "post",
+                data: {
+                    adminName: adminName,
+                    password: password,
+                },
+                dataType: 'text',
+                success: function (data) {
+                    if (data === "无此管理员") {
+                        // window.location.href="login";
+                        $("#passwordDiv").text("");
+                        $("#usernameDiv").text(data + "！请重新输入！");
+                        $("#usernameDiv").css("color", "red");
+                        $("#username").value = "";
+                        $("#password").value = "";
+                    } else if (data === "密码错误") {
+                        $("#usernameDiv").text("");
+                        $("#passwordDiv").text("密码错误！请重新输入！");
+                        $("#passwordDiv").css("color", "red");
+                        $("#password").value = "";
+                    } else if (data === "登录成功") {
+                        window.location.href = "/admin";
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function () {
+                    alert("抱歉，网络出了小差，请重试")
+                }
+            })
+
+        }
+    </script>
+</head>
+<body>
+<div class="col-lg-0">
+</div>
+<div class="col-lg-12" align="center">
+    <div class="loginpage">
+        <div class="login">
+            <h4><strong>A</strong>dmin</h4>
+            <div class="login-center">
+                <form action="#" method="post">
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="text" placeholder="管理员账号" class="form-control" name="adminName" id="adminName" />
+                        <div id="usernameDiv">
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback feedback-left">
+                        <input type="password" placeholder="请输入密码" class="form-control" id="password" name="password" />
+                        <div id="passwordDiv">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-block btn-primary" type="button" onclick="ajaxLogin()">立即登录</button>
+                    </div>
+                </form>
+                <hr>
+                <footer class="col-sm-12 text-center">
+                    <p class="m-b-0">学生自助学习平台  后台管理系统</p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

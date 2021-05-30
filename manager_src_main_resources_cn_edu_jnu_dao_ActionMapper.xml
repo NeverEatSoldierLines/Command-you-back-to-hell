@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jnu.dao.ActionMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.jnu.entity.Action">
+        <id column="action_id" jdbcType="INTEGER" property="actionId"/>
+        <result column="action_name" jdbcType="VARCHAR" property="actionName"/>
+        <result column="action_time" jdbcType="TIMESTAMP" property="actionTime"/>
+        <result column="action_location" jdbcType="VARCHAR" property="actionLocation"/>
+        <result column="action_detail" jdbcType="VARCHAR" property="actionDetail"/>
+        <result column="permitted" jdbcType="VARCHAR" property="permitted"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+    </resultMap>
+    <select id="selectNotPermittedActionUserId" resultType="INTEGER">
+        select user_id from action where permitted = 'no'
+    </select>
+
+    <select id="selectActionsByUserId" resultType="Action" parameterType="Integer">
+        select action_id,action_name,action_time,action_location,action_detail,permitted,user_id
+        from action where user_id = #{userId};
+    </select>
+
+    <update id="permitAction" parameterType="Integer">
+        update action set permitted = 'yes' where user_id = #{userId}
+    </update>
+
+    <delete id="deleteAction" parameterType="INTEGER">
+        delete from action where user_id = #{userId}
+    </delete>
+</mapper>

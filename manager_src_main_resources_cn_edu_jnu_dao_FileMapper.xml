@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jnu.dao.FileMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.jnu.entity.File">
+        <id column="file_id" jdbcType="INTEGER" property="fileId"/>
+        <result column="file_name" jdbcType="VARCHAR" property="fileName"/>
+        <result column="file_size" jdbcType="INTEGER" property="fileSize"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="tag1" jdbcType="VARCHAR" property="tag1"/>
+        <result column="tag2" jdbcType="VARCHAR" property="tag2"/>
+    </resultMap>
+
+    <select id="selectFilesByUserId" parameterType="Integer" resultType="File">
+        select file_id,file_name,file_size,user_id,tag1,tag2 from file where user_id =#{userId}
+    </select>
+
+    <select id="selectUserIdByFileId" parameterType="INTEGER" resultType="INTEGER">
+        select user_id from file where file_id = #{fileId}
+    </select>
+
+    <select id="selectFileNameByFileId" parameterType="INTEGER" resultType="String">
+        select file_name from file where file_id = #{fileId}
+    </select>
+
+    <delete id="deleteFile" parameterType="INTEGER">
+        delete from file where file_id = #{fileId}
+    </delete>
+</mapper>

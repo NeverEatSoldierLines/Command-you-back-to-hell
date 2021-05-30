@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <link rel="icon" href="/assets/img/icons/favicon.png" type="image/ico">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/fonts.css">
+    <script rel="script" type="text/javascript" src="/assets/js/jquery.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/bootstrap.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/jquery.cookie.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/framework.js"></script>
+    <script rel="script" type="text/javascript" src="/layui/layui.all.js"></script>
+    <script>
+        function deleteArticle(articleId){
+            $.ajax({
+                url:"deleteArticle",
+                type:"get",
+                dataType:"text",
+                data:{
+                    articleId:articleId
+                },
+                success:function (data){
+                    layer.alert(data,function () {
+                        location.reload();
+                    })
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div>
+    <label>
+        <a class="btn-link" th:href="@{/user-info(userId=${userId})}" target="_self">查看评论</a>
+        <a class="btn-link" th:href="@{/user-info3(userId=${userId})}" target="_self">查看文件</a>
+    </label>
+    <pre>
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th>文章/提问标题</th>
+            <th>文章/提问内容</th>
+            <th>文章/提问标签1</th>
+            <th>文章/提问标签2</th>
+            <th>删除文章/提问</th>
+        </tr>
+        </thead>
+
+        <tbody th:each="article:${articleList}">
+        <tr >
+            <th th:text="${article.getArticleName()}">1</th>
+            <td style="height:10px;" th:text="${article.getContent()}"></td>
+            <td th:text="${article.getTag1()}"></td>
+            <td th:text="${article.getTag2()}">1</td>
+            <td>
+                <button class="btn-warning btn" th:onclick="deleteArticle([[${article.getArticleId()}]])">
+                    <i class="ftsucai-77">删除该文</i>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</pre>
+</div>
+<ul class="pagination">
+    <li class="page-item" th:if="${pageInfo.pageNum!=1}"><a class="page-link"
+                                                            th:href="@{/user-info2(pageNum=1,userId=${userId})}">第一页</a>
+    </li>
+    <li class="page-item" th:if="${pageInfo.pageNum!=1}"><a class="page-link"
+                                                            th:href="@{/user-info2(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:${pageInfo.pages},userId=${userId})}">上一页</a>
+    </li>
+    <li class="page-item"><a class="page-link"><span th:text="第+${pageInfo.pageNum}+页"></span></a></li>
+    <li class="page-item"><a class="page-link"><span th:text="共+${pageInfo.pages}+页"></span></a></li>
+    <!--                    三目运算符-->
+    <li class="page-item" th:if="${pageInfo.pageNum != pageInfo.pages}"><a class="page-link"
+                                                                           th:href="@{/user-info2(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages},userId=${userId})}">下一页</a>
+    </li>
+    <li class="page-item" th:if="${pageInfo.pageNum != pageInfo.pages}"><a class="page-link"
+                                                                           th:href="@{/user-info2(pageNum=${pageInfo.pages},userId=${userId})}">尾页</a>
+    </li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户信息</title>
+    <link rel="icon" href="/assets/img/icons/favicon.png" type="image/ico">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/theme.css">
+    <link rel="stylesheet" type="text/css" href="/assets/css/fonts.css">
+    <script rel="script" type="text/javascript" src="/assets/js/jquery.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/bootstrap.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/jquery.cookie.js"></script>
+    <script rel="script" type="text/javascript" src="/assets/js/framework.js"></script>
+    <script rel="script" type="text/javascript" src="/layui/layui.all.js"></script>
+    <script>
+        function deleteComment(comment){
+            $.ajax({
+                url:"deleteComment",
+                type:"post",
+                data:{
+                    comment:comment
+                },
+                dataType:"text",
+                success:function(data){
+                    layer.alert(data,function (){
+                        location.reload();
+                    });
+                },
+                error:function(){
+                    layer.alert("网络出错，请刷新页面重试")
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div>
+    <div id="userComment">
+        <label>
+            <a class="btn-link" th:href="@{/user-info2(userId=${userId})}" target="_self">查看文章</a>
+            <a class="btn-link" th:href="@{/user-info3(userId=${userId})}" target="_self">查看文件</a>
+        </label>
+        <table class="table table-hover table-striped">
+            <thead>
+            <tr>
+                <th>评论内容</th>
+                <th>删除评论</th>
+            </tr>
+            </thead>
+            <tbody th:each="comment:${commentList}">
+            <tr>
+                <td th:text="${comment}">1</td>
+                <td>
+                    <button class="btn-warning btn" th:onclick="deleteComment([[${comment}]])">
+                        <i class="ftsucai-77">删除该评论</i>
+                    </button>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+    <ul class="pagination">
+        <li class="page-item" th:if="${pageInfo.pageNum!=1}"><a class="page-link"
+                                                                th:href="@{/user-info(pageNum=1,userId=${userId})}">第一页</a>
+        </li>
+        <li class="page-item" th:if="${pageInfo.pageNum!=1}"><a class="page-link"
+                                                                th:href="@{/user-info(pageNum=${pageInfo.hasPreviousPage}?${pageInfo.prePage}:${pageInfo.pages},userId=${userId})}">上一页</a>
+        </li>
+        <li class="page-item"><a class="page-link"><span th:text="第+${pageInfo.pageNum}+页"></span></a></li>
+        <li class="page-item"><a class="page-link"><span th:text="共+${pageInfo.pages}+页"></span></a></li>
+        <!--                    三目运算符-->
+        <li class="page-item" th:if="${pageInfo.pageNum != pageInfo.pages}"><a class="page-link"
+                                                                               th:href="@{/user-info(pageNum=${pageInfo.hasNextPage}?${pageInfo.nextPage}:${pageInfo.pages},userId=${userId})}">下一页</a>
+        </li>
+        <li class="page-item" th:if="${pageInfo.pageNum != pageInfo.pages}"><a class="page-link"
+                                                                               th:href="@{/user-info(pageNum=${pageInfo.pages},userId=${userId})}">尾页</a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

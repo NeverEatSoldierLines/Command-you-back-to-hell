@@ -1,0 +1,49 @@
+{
+  "name": "adminapp",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron .",
+    "pack":"electron-builder --dir",
+    "dist":"electron-builder",
+    "package-mac": "electron-packager . webstudyapp --platform=darwin --electron-version=10.0.0 --arch=x64 --download.mirrorOptions.mirror=https://npm.taobao.org/mirrors/electron/ --asar --app-version=0.0.0 --build-version=1.0.0 --out=webstudyapp --overwrite --no-package-manager --ignore='(.git)' --icon=../static/assets/img/icons/favicon.png"
+  },
+  "author": "sunhao",
+  "license": "ISC",
+  
+  "description": "",
+  "devDependencies": {
+    "electron": "^12.0.5",
+    "electron-builder": "^22.10.5",
+    "electron-packager": "^15.2.0"
+  },
+  "build":{
+    "appId":"com.azimiao.test",
+    "asar":true,
+    "afterPack":"./build/afterPack.js",
+    "directories":{
+        "buildResources":"build",
+        "output":"dist"
+    },
+    "win":{
+        "target": [{
+            "target":"nsis"
+        }],
+        "icon":"build/favicon.ico",
+        "asarUnpack":[
+            "src/**",
+            "README.md"
+        ]
+    },
+    "nsis":{
+        "oneClick":false,
+        "allowElevation":true,
+        "allowToChangeInstallationDirectory":true,
+        "installerIcon":"build/install_favicon.ico",
+        "uninstallerIcon":"build/uninstall_favicon.ico",
+        "createDesktopShortcut": true,
+        "createStartMenuShortcut": true
+    }
+  }
+}

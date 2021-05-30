@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jnu.dao.UserMapper">
+    <resultMap id="BaseResultMap1" type="User">
+        <result column="id" jdbcType="INTEGER" property="id" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="password" jdbcType="VARCHAR" property="password" />
+        <result column="school" jdbcType="VARCHAR" property="school" />
+        <result column="birthday" jdbcType="DATE" property="birthday" />
+        <result column="sex" jdbcType="VARCHAR" property="sex" />
+        <result column="major" jdbcType="VARCHAR" property="major" />
+        <result column="self_description" jdbcType="VARCHAR" property="selfDescription" />
+        <result column="is_available" jdbcType="BIT" property="isAvailable" />
+        <result column="phone_number" jdbcType="VARCHAR" property="phoneNumber"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="user_location" jdbcType="VARCHAR" property="userLocation"/>
+        <result column="profile_picture" jdbcType="VARCHAR" property="profilePicture"/>
+    </resultMap>
+
+    <select id="selectUsersNotAvailable" resultType="INTEGER">
+        select id from user where is_available = 0
+    </select>
+
+    <select id="selectUsernameById" parameterType="INTEGER" resultType="String">
+        select username from user where id = #{userId}
+    </select>
+    <select id="selectAllUsers" resultType="User">
+# 这里没有查全，等有需求再来查
+        select *from user
+    </select>
+
+    <update id="banUser" parameterType="INTEGER">
+# 管理员可以将用户改成禁用状态，但不能删除用户
+        update user set is_available = -1 where id = #{userId};
+    </update>
+
+    <update id="releaseUser" parameterType="INTEGER">
+        update user set is_available = 1 where id = #{userId}
+    </update>
+
+    <delete id="deleteUserById" parameterType="INTEGER">
+        delete from user where id = #{userId} and is_available = 0
+    </delete>
+
+    <select id="selectUserIsAvailableById" parameterType="INTEGER" resultType="Integer">
+        select is_available from user where id = #{userId}
+    </select>
+
+    <update id="limitUser" parameterType="INTEGER">
+        update user set is_available = -2 where id = #{userId};
+
+    </update>
+
+    <update id="updateUserInfo" parameterType="INTEGER">
+# 重新让用户可用
+        update user set is_available = 1 where id = #{userId}
+    </update>
+</mapper>

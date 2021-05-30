@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{HtmlSanitizer, all, apexcharts, bootstrap, html5shiv, respond, signin, simplebar}" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/templates/register.html" libraries="{HTTP Response Handler}" />
+  </component>
+</project>

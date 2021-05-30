@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.jnu.dao.ArticleMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.jnu.entity.Article">
+<!--        虽然当column和property相同时可以不用将其映射，但为了可读性，还是需要也放进来-->
+        <id column="article_id" jdbcType="INTEGER" property="articleId"/>
+        <result column="article_name" jdbcType="VARCHAR" property="articleName"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="tag1" jdbcType="VARCHAR" property="tag1"/>
+        <result column="tag2" jdbcType="VARCHAR" property="tag2"/>
+        <result column="comment_number" jdbcType="INTEGER" property="commentNumber"/>
+        <result column="read_number" jdbcType="INTEGER" property="readNumber"/>
+        <result column="likes" jdbcType="INTEGER" property="likes"/>
+    </resultMap>
+
+        <select id="selectArticlesByUserId" resultType="Article" parameterType="Integer">
+                select article_id,article_name,user_id,upload_time,content,tag1,tag2,comment_number,read_number,likes
+                    from article where user_id = #{userId}
+        </select>
+
+        <delete id="deleteArticle" parameterType="INTEGER">
+            delete from article where article_id=#{articleId};
+        </delete>
+</mapper>
